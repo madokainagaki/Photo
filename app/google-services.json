@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "416532393814",
+    "project_id": "photoapp-add6d",
+    "storage_bucket": "photoapp-add6d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:416532393814:android:4de96f5d0793cac7d6b0f7",
+        "android_client_info": {
+          "package_name": "com.example.photo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "416532393814-3623jq3oiusvu8poo4s4rar4s1s1lodd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAzprIBsyljv8H6PL8uSLeEWQxsu8q7Sw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "416532393814-3623jq3oiusvu8poo4s4rar4s1s1lodd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
