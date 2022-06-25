@@ -44,14 +44,11 @@ class MainActivity : AppCompatActivity() {
 
         val data3 = HashMap<String, String>()
         val testRef3 = dataBaseReference.child(DiaryPATH).child(data2).child("-N5NLnkjj-5_dFEFL13v")
-        data3["title"] = "変更だよーん"
-        data3["content"] = "変更だよーん"
-        data3["name"] = "変更だよーん"
-        testRef3.setValue(data3)
+        testRef3.removeValue()
 
         toLoginPage.setOnClickListener{
-//        val intent = Intent(applicationContext, LoginActivity::class.java)
-//        startActivity(intent)
+        val intent = Intent(applicationContext, LoginActivity::class.java)
+        startActivity(intent)
         }
     }
 }
