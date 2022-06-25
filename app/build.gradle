@@ -7,7 +7,7 @@ apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion 29
     defaultConfig {
-        applicationId "jp.techacademy.taro.kirameki.qa_app"
+        applicationId "com.example.photo"
         minSdkVersion 23
         targetSdkVersion 29
         versionCode 1
