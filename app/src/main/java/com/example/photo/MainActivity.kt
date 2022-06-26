@@ -3,6 +3,8 @@ package com.example.photo
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Base64
+import android.util.Log
 import androidx.lifecycle.Transformations.map
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_main.*
@@ -10,28 +12,55 @@ import kotlin.collections.Map as Map
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var mDiaryAdapter: DiaryListAdapter
+    private lateinit var mDatabaseReference: DatabaseReference
+    private lateinit var mAdapter: DiaryListAdapter
     private lateinit var mDiaryArrayList: ArrayList<Diary>
-    private lateinit var mDiaryRef: DatabaseReference
+
+    private var mTestRef: DatabaseReference? = null
+
+    private val mEventListener = object : ChildEventListener {
+        override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
+
+            val map = dataSnapshot.value as Map<String, String>
+            val title = map["title"] ?: ""
+            val body = map["body"] ?: ""
+            val name = map["name"] ?: ""
+
+            val diary = Diary(title, body, name)
+            mDiaryArrayList.add(diary)
+            mAdapter.notifyDataSetChanged()
+        }
+
+        override fun onCancelled(error: DatabaseError) {
+            TODO("Not yet implemented")
+        }
+
+
+        override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
+            TODO("Not yet implemented")
+        }
+
+        override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+            TODO("Not yet implemented")
+        }
+
+        override fun onChildRemoved(snapshot: DataSnapshot) {
+            TODO("Not yet implemented")
+        }
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        mDiaryAdapter = DiaryListAdapter(this)
+        mAdapter = DiaryListAdapter(this)
         mDiaryArrayList = ArrayList<Diary>()
 
-        val title = "熱海旅行"
-        val content = "夏のグループ旅行"
-        val name = "iagaki"
-        val diary = Diary(title, content, name)
-
-        mDiaryArrayList.add(diary)
-
-        mDiaryAdapter.mDiaryList = mDiaryArrayList
-        diaryListView.adapter = mDiaryAdapter
-        mDiaryAdapter.notifyDataSetChanged()
-
+        mAdapter.mDiaryList = mDiaryArrayList
+        diaryListView.adapter = mAdapter
+        mAdapter.notifyDataSetChanged()
+//
         val dataBaseReference = FirebaseDatabase.getInstance().reference
         val data2 = "●●の旅"
 
@@ -42,13 +71,22 @@ class MainActivity : AppCompatActivity() {
         data["name"] = "名前だよーん"
         testRef.push().setValue(data)
 
-        val data3 = HashMap<String, String>()
-        val testRef3 = dataBaseReference.child(DiaryPATH).child(data2).child("-N5NLnkjj-5_dFEFL13v")
-        testRef3.removeValue()
+//削除するときはこれ
+//  .removeValue()
 
         toLoginPage.setOnClickListener{
         val intent = Intent(applicationContext, LoginActivity::class.java)
         startActivity(intent)
         }
+
+        mDiaryArrayList.clear()
+        mAdapter.setQuestionArrayList(mDiaryArrayList)
+        diaryListView.adapter = mAdapter
+
+        mDatabaseReference = FirebaseDatabase.getInstance().reference
+
+        mTestRef = mDatabaseReference.child(DiaryPATH).child(data2)
+        mTestRef!!.addChildEventListener(mEventListener)
+
     }
 }

@@ -48,4 +48,8 @@ class DiaryListAdapter(context: Context) : BaseAdapter() {
 
         return convertView
     }
+
+    fun setQuestionArrayList(questionArrayList: ArrayList<Diary>) {
+        mDiaryList = questionArrayList
+    }
 }
