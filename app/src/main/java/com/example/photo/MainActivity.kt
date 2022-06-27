@@ -60,12 +60,6 @@ class MainActivity : AppCompatActivity() {
         mAdapter.notifyDataSetChanged()
 //
         val dataBaseReference = FirebaseDatabase.getInstance().reference
-        val data2 = "●●の旅"
-
-
-
-//削除するときはこれ
-//  .removeValue()
 
         toLoginPage.setOnClickListener{
 
@@ -73,7 +67,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
 
             val data = HashMap<String, String>()
-            val testRef = dataBaseReference.child(DiaryPATH).child("1")
+            val testRef = dataBaseReference.child(DiaryPATH)
             data["title"] = "タイトル"
             data["contents"] = "内容"
             data["name"] = "名前"
