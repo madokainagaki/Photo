@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity() {
             val diary = Diary(title, body, name)
             mDiaryArrayList.add(diary)
             mAdapter.notifyDataSetChanged()
+            Log.d("test", mDiaryArrayList.toString())
         }
 
         override fun onCancelled(error: DatabaseError) {
@@ -64,29 +65,35 @@ class MainActivity : AppCompatActivity() {
         val dataBaseReference = FirebaseDatabase.getInstance().reference
         val data2 = "●●の旅"
 
-        val testRef = dataBaseReference.child(DiaryPATH).child(data2)
-        val data = HashMap<String, String>()
-        data["title"] = "タイトルだよーん"
-        data["content"] = "内容だよーん"
-        data["name"] = "名前だよーん"
-        testRef.push().setValue(data)
+
 
 //削除するときはこれ
 //  .removeValue()
 
         toLoginPage.setOnClickListener{
-        val intent = Intent(applicationContext, LoginActivity::class.java)
-        startActivity(intent)
+
+//            val intent = Intent(applicationContext, LoginActivity::class.java)
+//            startActivity(intent)
+
+            val data = HashMap<String, String>()
+            val testRef = dataBaseReference.child(DiaryPATH).child("1")
+            data["title"] = "タイトルだよーん"
+            data["content"] = "内容だよーん"
+            data["name"] = "名前だよーん"
+            testRef.push().setValue(data)
+        }
+
+        diaryListView.setOnItemClickListener{parent, view, position, id ->
+            Log.d("test", "$position 番目が押されましたよ")
         }
 
         mDiaryArrayList.clear()
-        mAdapter.setQuestionArrayList(mDiaryArrayList)
+        mAdapter.setDiaryArrayList(mDiaryArrayList)
         diaryListView.adapter = mAdapter
 
         mDatabaseReference = FirebaseDatabase.getInstance().reference
 
-        mTestRef = mDatabaseReference.child(DiaryPATH).child(data2)
+        mTestRef = mDatabaseReference.child(DiaryPATH).child("1")
         mTestRef!!.addChildEventListener(mEventListener)
-
     }
 }

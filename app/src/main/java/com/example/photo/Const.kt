@@ -6,6 +6,8 @@ const val UsersPATH = "users"
 // Firebaseに質問を保存するバス
 const val DiaryPATH = "diarys"
 
+const val TripPATH = "trips"
+
 // Firebaseに回答を保存するパス
 const val AnswersPATH = "answers"
 
