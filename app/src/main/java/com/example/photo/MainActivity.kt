@@ -26,8 +26,10 @@ class MainActivity : AppCompatActivity() {
             val title = map["title"] ?: ""
             val contents = map["contents"] ?: ""
             val name = map["name"] ?: ""
+            val diaryUid = map["diaryUid"] ?: ""
 
-            val diary = Diary(title, contents, name)
+            val diary = Diary(title, contents, name, dataSnapshot.key ?: "")
+            Log.d("test" , diaryUid)
 
             mDiaryArrayList.add(diary)
             mAdapter.notifyDataSetChanged()
@@ -71,14 +73,13 @@ class MainActivity : AppCompatActivity() {
             data["title"] = "タイトル"
             data["contents"] = "内容"
             data["name"] = "名前"
+            data["diaryUid"] = "uid"
             testRef.push().setValue(data)
-
         }
 
         diaryListView.setOnItemClickListener{parent, view, position, id ->
-//            val testRef = dataBaseReference.child(DiaryPATH)
-//            val testRefId = testRef.key
-//            Log.d("test" , testRefId)
+            val diaryUid = mDiaryArrayList[position].diaryUid
+            Log.d("test", diaryUid)
         }
 
         mDiaryArrayList.clear()
