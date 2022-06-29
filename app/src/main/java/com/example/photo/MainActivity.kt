@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
             val diaryUid = map["diaryUid"] ?: ""
 
             val diary = Diary(title, contents, name, dataSnapshot.key ?: "")
-            Log.d("test" , diaryUid)
+            Log.d("test" , dataSnapshot.key)
 
             mDiaryArrayList.add(diary)
             mAdapter.notifyDataSetChanged()
@@ -46,6 +46,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         override fun onChildRemoved(snapshot: DataSnapshot) {
+            Log.d("test" , "test")
         }
 
     }
@@ -79,7 +80,10 @@ class MainActivity : AppCompatActivity() {
 
         diaryListView.setOnItemClickListener{parent, view, position, id ->
             val diaryUid = mDiaryArrayList[position].diaryUid
-            Log.d("test", diaryUid)
+//            val diaryRef = dataBaseReference.child(DiaryPATH).child(diaryUid)
+//            diaryRef.removeValue()
+//            mDiaryArrayList.removeAt(position)
+//            mAdapter.notifyDataSetChanged()
         }
 
         mDiaryArrayList.clear()
