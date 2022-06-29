@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Base64
 import android.util.Log
 import androidx.lifecycle.Transformations.map
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.collections.Map as Map
@@ -26,7 +27,6 @@ class MainActivity : AppCompatActivity() {
             val title = map["title"] ?: ""
             val contents = map["contents"] ?: ""
             val name = map["name"] ?: ""
-            val diaryUid = map["diaryUid"] ?: ""
 
             val diary = Diary(title, contents, name, dataSnapshot.key ?: "")
             Log.d("test" , dataSnapshot.key)
@@ -74,16 +74,19 @@ class MainActivity : AppCompatActivity() {
             data["title"] = "タイトル"
             data["contents"] = "内容"
             data["name"] = "名前"
-            data["diaryUid"] = "uid"
             testRef.push().setValue(data)
         }
 
         diaryListView.setOnItemClickListener{parent, view, position, id ->
+            if (FirebaseAuth.getInstance().currentUser == null){
+                return@setOnItemClickListener
+            }
             val diaryUid = mDiaryArrayList[position].diaryUid
-//            val diaryRef = dataBaseReference.child(DiaryPATH).child(diaryUid)
-//            diaryRef.removeValue()
-//            mDiaryArrayList.removeAt(position)
-//            mAdapter.notifyDataSetChanged()
+            val diaryRef = dataBaseReference.child(DiaryPATH).child(diaryUid)
+            diaryRef.removeValue().addOnSuccessListener{Log.d("test","addonSuccessListener")}
+                .addOnFailureListener{Log.d("test",it.toString())}
+            mDiaryArrayList.removeAt(position)
+            mAdapter.notifyDataSetChanged()
         }
 
         mDiaryArrayList.clear()
