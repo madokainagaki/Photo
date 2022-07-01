@@ -65,16 +65,13 @@ class MainActivity : AppCompatActivity() {
         val dataBaseReference = FirebaseDatabase.getInstance().reference
 
         toLoginPage.setOnClickListener{
-
             val intent = Intent(applicationContext, LoginActivity::class.java)
             startActivity(intent)
+        }
 
-            val data = HashMap<String, String>()
-            val testRef = dataBaseReference.child(DiaryPATH)
-            data["title"] = "タイトル"
-            data["contents"] = "内容"
-            data["name"] = "名前"
-            testRef.push().setValue(data)
+        toDiaryAddPage.setOnClickListener{
+            val intent = Intent(applicationContext, AddDiaryActivity::class.java)
+            startActivity(intent)
         }
 
         diaryListView.setOnItemClickListener{parent, view, position, id ->

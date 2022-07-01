@@ -17,6 +17,12 @@
         android:text="ログイン画面へ"
         android:id="@+id/toLoginPage"/>
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="新規"
+        android:id="@+id/toDiaryAddPage"/>
+
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
