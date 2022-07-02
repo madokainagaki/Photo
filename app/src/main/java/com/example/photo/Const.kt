@@ -8,6 +8,8 @@ const val DiaryPATH = "diarys"
 
 const val TripPATH = "trips"
 
+const val CountPATH = "counts"
+
 // Firebaseに回答を保存するパス
 const val AnswersPATH = "answers"
 

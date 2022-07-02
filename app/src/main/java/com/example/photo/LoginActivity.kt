@@ -3,6 +3,7 @@ package com.example.photo
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.preference.PreferenceManager
@@ -65,6 +66,7 @@ class LoginActivity : AppCompatActivity() {
                     val data = HashMap<String, String>()
                     data["name"] = name
                     userRef.setValue(data)
+
 
                     // 表示名をPreferenceに保存する
                     saveName(name)

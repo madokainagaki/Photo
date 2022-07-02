@@ -11,14 +11,20 @@ import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.collections.Map as Map
 
+var countDiary: String = "0"
+var uid = ""
+
 @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class MainActivity : AppCompatActivity() {
-
     private lateinit var mDatabaseReference: DatabaseReference
     private lateinit var mAdapter: DiaryListAdapter
-    private lateinit var mDiaryArrayList: ArrayList<Diary>
 
+    private lateinit var mDiaryArrayList: ArrayList<Diary>
     private var mTestRef: DatabaseReference? = null
+    private var mCountRef: DatabaseReference? = null
+    var count = 0
+
+    private lateinit var auth: FirebaseAuth
 
     private val mEventListener = object : ChildEventListener {
         override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
@@ -27,12 +33,14 @@ class MainActivity : AppCompatActivity() {
             val title = map["title"] ?: ""
             val contents = map["contents"] ?: ""
             val name = map["name"] ?: ""
+            val userId = map["userId"] ?: ""
 
-            val diary = Diary(title, contents, name, dataSnapshot.key ?: "")
-            Log.d("test" , dataSnapshot.key)
-
+            val diary = Diary(title, contents, name, userId,dataSnapshot.key ?: "")
             mDiaryArrayList.add(diary)
             mAdapter.notifyDataSetChanged()
+
+            count = count + 1
+            mDatabaseReference.child(CountPATH).child("count").setValue(count.toString())
         }
 
         override fun onCancelled(error: DatabaseError) {
@@ -46,9 +54,27 @@ class MainActivity : AppCompatActivity() {
         }
 
         override fun onChildRemoved(snapshot: DataSnapshot) {
-            Log.d("test" , "test")
         }
 
+    }
+
+    private val mCountListener = object : ChildEventListener {
+        override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
+        }
+
+        override fun onCancelled(error: DatabaseError) {
+        }
+
+
+        override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
+        }
+
+        override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+            countDiary = snapshot.getValue().toString()
+        }
+
+        override fun onChildRemoved(snapshot: DataSnapshot) {
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,6 +98,7 @@ class MainActivity : AppCompatActivity() {
         toDiaryAddPage.setOnClickListener{
             val intent = Intent(applicationContext, AddDiaryActivity::class.java)
             startActivity(intent)
+
         }
 
         diaryListView.setOnItemClickListener{parent, view, position, id ->
@@ -91,6 +118,16 @@ class MainActivity : AppCompatActivity() {
         diaryListView.adapter = mAdapter
 
         mDatabaseReference = FirebaseDatabase.getInstance().reference
+
+        auth = FirebaseAuth.getInstance()
+        val user = auth.currentUser
+        if(user != null) {
+            uid = user.uid
+        }
+
+        mCountRef = mDatabaseReference.child(CountPATH)
+        mCountRef!!.removeValue()
+        mCountRef!!.addChildEventListener(mCountListener)
 
         mTestRef = mDatabaseReference.child(DiaryPATH)
         mTestRef!!.addChildEventListener(mEventListener)

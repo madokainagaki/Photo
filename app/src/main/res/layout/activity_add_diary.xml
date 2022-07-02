@@ -17,6 +17,22 @@
             android:text="追加する"
             android:id="@+id/addbtn"/>
 
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="旅のタイトル"
+            android:id="@+id/editTitle" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="200sp"
+            android:hint="旅の記録"
+            android:id="@+id/editContents" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="場所"
+            android:id="@+id/editPlace" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
