@@ -36,6 +36,23 @@ class MainActivity : AppCompatActivity() {
             val userId = map["userId"] ?: ""
 
             val diary = Diary(title, contents, name, userId,dataSnapshot.key ?: "")
+
+            val uid = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+// (1)で設定した uid で取得する(orderByKey().equalTo() でとれます)
+            mDatabaseReference.child(UsersPATH).orderByKey().equalTo(uid).addListenerForSingleValueEvent(object: ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val data = snapshot.value as Map<*, *>?
+                    val user = data?.values?.firstOrNull() as Map<*, *>?
+                    // (2) 名前を取得
+                    diary.name = user!!["name"].toString() ?: ""
+                    // (3) 表示更新
+                    mAdapter.notifyDataSetChanged()
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                }
+            })
+
             mDiaryArrayList.add(diary)
             mAdapter.notifyDataSetChanged()
 

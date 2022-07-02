@@ -42,10 +42,7 @@ class AddDiaryActivity : AppCompatActivity() {
             data["title"] = title.toString()
             data["contents"] = contents.toString()
             data["name"] = place.toString()
-//            data["userId"] = uid
-            val sp = PreferenceManager.getDefaultSharedPreferences(this)
-            val name = sp.getString(NameKEY, "")
-            data["uid"] = name.toString()
+            data["uid"] = FirebaseAuth.getInstance().currentUser?.uid ?: ""
 
             addRef.push().setValue(data)
 
