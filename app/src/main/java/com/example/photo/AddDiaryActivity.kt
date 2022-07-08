@@ -41,7 +41,6 @@ class AddDiaryActivity : AppCompatActivity() {
             val addRef = dataBaseReference.child(DiaryPATH)
             data["title"] = title.toString()
             data["contents"] = contents.toString()
-            data["name"] = place.toString()
             data["uid"] = FirebaseAuth.getInstance().currentUser?.uid ?: ""
 
             addRef.push().setValue(data)
